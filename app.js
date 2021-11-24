@@ -44,6 +44,22 @@ console.log(foundArticles);
 });
 
 
+// Save one article in MongoDB
+app.post("/articles", function(req, res){
+  const articleToSave = new Article({
+    title:req.body.title,
+    content: req.body.content
+  });
+  articleToSave.save(function(err){
+    if(!err){
+      res.send("New article added");
+    }else{
+      res.send(err);
+    }
+  });
+});
+
+
 
 
 
