@@ -1,9 +1,9 @@
-//jshint esversion:8
+//jshint esversion:6
 
-const express = require('express');
-const ejs = require('ejs');
+const express = require("express");
+const bodyParser = require("body-parser");
+const ejs = require("ejs");
 const mongoose = require('mongoose');
-const bodyParser = require ('body-parser');
 
 
 const app = express();
@@ -18,9 +18,8 @@ app.use(express.static("public"));
 
 
 
-async function main() {
-  await mongoose.connect('mongodb://localhost:27017/wikiDB', {userNewUrlParser:true});
-}
+mongoose.connect('mongodb://localhost:27017/wikiDB');
+
 
 //Model for each Article
 const articleSchema ={
@@ -29,7 +28,24 @@ const articleSchema ={
 };
 
 //Schema for each  Article
-const Article = mongoose.model("Article", articleSchema );
+const Article = mongoose.model("article", articleSchema );
+
+
+//Get all the articles using articles route
+app.get("/articles", function(req, res){
+Article.find(function(err, foundArticles){
+console.log(foundArticles);
+  if (!err){
+    res.send(foundArticles);
+  }else{
+    res.send(err);
+  }
+});
+});
+
+
+
+
 
 
 
