@@ -34,7 +34,7 @@ const Article = mongoose.model("article", articleSchema );
 //Get all the articles using articles route
 app.get("/articles", function(req, res){
 Article.find(function(err, foundArticles){
-console.log(foundArticles);
+
   if (!err){
     res.send(foundArticles);
   }else{
@@ -53,6 +53,17 @@ app.post("/articles", function(req, res){
   articleToSave.save(function(err){
     if(!err){
       res.send("New article added");
+    }else{
+      res.send(err);
+    }
+  });
+});
+
+app.delete("/articles", function(req, res ){
+
+  Article.deleteMany({}, function(err){
+    if(!err){
+      res.send("Items deleted");
     }else{
       res.send(err);
     }
