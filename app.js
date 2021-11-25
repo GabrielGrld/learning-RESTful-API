@@ -22,56 +22,48 @@ mongoose.connect('mongodb://localhost:27017/wikiDB');
 
 
 //Model for each Article
-const articleSchema ={
+const articleSchema = {
   title: String,
   content: String
 };
 
 //Schema for each  Article
-const Article = mongoose.model("article", articleSchema );
+const Article = mongoose.model("article", articleSchema);
 
+app.route("/articles")
+.get(function(req, res) {
+  Article.find(function(err, foundArticles) {
+    if (!err) {
+      res.send(foundArticles);
+    } else {
+      res.send(err);
+    }
+  });
+})
 
-//Get all the articles using articles route
-app.get("/articles", function(req, res){
-Article.find(function(err, foundArticles){
-
-  if (!err){
-    res.send(foundArticles);
-  }else{
-    res.send(err);
-  }
-});
-});
-
-
-// Save one article in MongoDB
-app.post("/articles", function(req, res){
+.post(function(req, res) {
   const articleToSave = new Article({
-    title:req.body.title,
+    title: req.body.title,
     content: req.body.content
   });
-  articleToSave.save(function(err){
-    if(!err){
+  articleToSave.save(function(err) {
+    if (!err) {
       res.send("New article added");
-    }else{
+    } else {
       res.send(err);
     }
   });
-});
+})
 
-app.delete("/articles", function(req, res ){
-
-  Article.deleteMany({}, function(err){
-    if(!err){
+.delete(function(req, res) {
+  Article.deleteMany({}, function(err) {
+    if (!err) {
       res.send("Items deleted");
-    }else{
+    } else {
       res.send(err);
     }
   });
 });
-
-
-
 
 
 
