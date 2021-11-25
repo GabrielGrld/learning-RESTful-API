@@ -30,6 +30,8 @@ const articleSchema = {
 //Schema for each  Article
 const Article = mongoose.model("article", articleSchema);
 
+
+//////////////////////////////////// Requests Targetting A All Articles //////////////////////////////////
 app.route("/articles")
 .get(function(req, res) {
   Article.find(function(err, foundArticles) {
@@ -64,6 +66,55 @@ app.route("/articles")
     }
   });
 });
+
+
+
+//////////////////////////////////// Requests Targetting A Specific Article //////////////////////////////////
+app.route("/articles/:articlesName")
+
+.get(function(req, res){
+const specificArticle = req.params.articlesName;
+Article.findOne({title:specificArticle}, function(err, foundArticle){
+  if(foundArticle){
+    res.send(foundArticle);
+  }else{
+    res.send("No articles matching that title");
+  }
+});
+})
+
+.put(function(req, res){
+  const specificArticle = req.params.articlesName;
+Article.updateOne(
+  {title:specificArticle},
+   {title: req.body.title,
+   content: req.body.content},
+    function(err){
+     if(!err){
+       res.send("Article updated!");
+     }
+   });
+})
+.patch(function(req, res){
+  const specificArticle = req.params.articlesName;
+Article.updateOne(
+  {title:specificArticle},
+   {title: req.body.title,
+   content: req.body.content},
+    function(err){
+     if(!err){
+       res.send("Article updated!");
+     }
+   });
+}).delete(function(req, res){
+  const specificArticle = req.params.articlesName;
+  Article.deleteOne({}, function(err){
+    if(!err){
+      res.send("Article Deleted");
+    }
+  });
+});
+
 
 
 
