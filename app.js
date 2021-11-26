@@ -108,7 +108,7 @@ Article.updateOne(
    });
 }).delete(function(req, res){
   const specificArticle = req.params.articlesName;
-  Article.deleteOne({}, function(err){
+  Article.deleteOne({title:req.params.articlesName}, function(err){
     if(!err){
       res.send("Article Deleted");
     }
